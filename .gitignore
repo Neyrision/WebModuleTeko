@@ -156,6 +156,9 @@ csx/
 ecf/
 rcf/
 
+# Angular
+.angular
+
 # Microsoft Azure ApplicationInsights config file
 ApplicationInsights.config
 

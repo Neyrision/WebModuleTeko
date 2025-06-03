@@ -129,5 +129,8 @@
       }
     }
   },
-  "defaultProject": "WebModuleTeko"
+  "defaultProject": "WebModuleTeko",
+  "cli": {
+    "analytics": "d49bbc19-007b-45a5-910b-12957f67c7c4"
+  }
 }
