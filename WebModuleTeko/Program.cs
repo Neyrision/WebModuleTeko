@@ -1,10 +1,16 @@
 using Microsoft.EntityFrameworkCore;
+using WebModuleTeko.Configuration;
 using WebModuleTeko.Database;
+using WebModuleTeko.Extensions;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+var apiConfiguration = builder.Configuration.GetSection(nameof(ApiConfiguration)).Get<ApiConfiguration>()!;
+
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddRateLimiter();
 
 // Add db.
 builder.Services.AddDbContext<WmtContext>(options => 
@@ -22,24 +28,38 @@ if (!app.Environment.IsDevelopment())
 {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    app.UseHttpsRedirection();
 
-    // Use Swagger
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Api");
-    });
-    app.UseOpenApi();
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
+app.UseRateLimiter();
+app.MapControllers();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+// Use Swagger
+app.UseSwagger();
+app.UseOpenApi();
+//app.UseSwaggerUI(options =>
+//{
+//    options.DocumentTitle = "WebModuleTeko Api";
+//    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Api");
+//});
 
-app.MapFallbackToFile("index.html");
+// Cors
+app.UseCors(options => options
+    .WithOrigins(apiConfiguration.AllowedOrigin
+        .Split(',')
+        .Select(origin => origin.Trim())
+        .ToArray())
+    .SetIsOriginAllowedToAllowWildcardSubdomains()
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    //.WithExposedHeaders("Content-Disposition")
+    .AllowCredentials());
+
+
+if (!app.Environment.IsEnvironment("NSwag"))
+{
+    app.EnsureDatabaseMigrated();
+}
 
 app.Run();
