@@ -38,11 +38,6 @@ app.MapControllers();
 // Use Swagger
 app.UseSwagger();
 app.UseOpenApi();
-//app.UseSwaggerUI(options =>
-//{
-//    options.DocumentTitle = "WebModuleTeko Api";
-//    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Api");
-//});
 
 // Cors
 app.UseCors(options => options
