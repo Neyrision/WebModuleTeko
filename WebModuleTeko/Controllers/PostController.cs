@@ -20,10 +20,10 @@ public class PostController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public async Task<string> GetTest()
+    public async Task<ActionResult<string>> GetTest()
     {
         var test = await _wmtContext.Posts.ToListAsync();
 
-        return "";
+        return Ok("");
     }
 }

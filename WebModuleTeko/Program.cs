@@ -53,7 +53,6 @@ app.UseCors(options => options
     .SetIsOriginAllowedToAllowWildcardSubdomains()
     .AllowAnyHeader()
     .AllowAnyMethod()
-    //.WithExposedHeaders("Content-Disposition")
     .AllowCredentials());
 
 
