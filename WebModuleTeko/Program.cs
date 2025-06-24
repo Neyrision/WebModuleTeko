@@ -1,8 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using WebModuleTeko.Database;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
 
-builder.Services.AddControllersWithViews();
+// Add db.
+builder.Services.AddDbContext<WmtContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(WmtContext))));
+
+// Swagger Setup.
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApiDocument();
 
 var app = builder.Build();
 
@@ -11,17 +22,24 @@ if (!app.Environment.IsDevelopment())
 {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+
+    // Use Swagger
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Api");
+    });
+    app.UseOpenApi();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-app.MapFallbackToFile("index.html"); ;
+app.MapFallbackToFile("index.html");
 
 app.Run();
