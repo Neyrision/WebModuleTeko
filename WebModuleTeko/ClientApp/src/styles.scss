@@ -1,0 +1,29 @@
+@use "bootstrap/scss/bootstrap";
+@use "@angular/material" as mat;
+
+html {
+  color-scheme: dark;
+  @include mat.theme(
+    (
+      color: mat.$cyan-palette,
+    )
+  );
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:host {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+  border: 1px solid var(--mat-sys-outline-variant);
+  font: var(--mat-sys-body-large);
+}
+.mat-mdc-button-base {
+  border-radius: 4px !important;
+}

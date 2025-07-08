@@ -1,0 +1,28 @@
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav mode="side" [opened]="showMenu">
+    <mat-nav-list>
+      <a mat-list-item href="#">Home</a>
+      <a mat-list-item href="#">About</a>
+      <a mat-list-item href="#">Contact</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <div class="flex-grow-1">
+        @if(showMenu) {
+        <button mat-icon-button (click)="sidenav.toggle()" class="ms-3">
+          <mat-icon>menu</mat-icon>
+        </button>
+        }
+        <span class="title" (click)="onHomeClick()">{{title}}</span>
+      </div>
+      <div class="d-flex gap-3">
+        <button mat-stroked-button (click)="onClick()">login / register</button>
+      </div>
+    </mat-toolbar>
+
+    <div class="content p-3">
+      <router-outlet />
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
