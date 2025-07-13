@@ -1,0 +1,40 @@
+# fly.toml app configuration file generated for web-module-keycloak on 2025-07-12T17:59:47+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'web-module-keycloak'
+primary_region = 'fra'
+
+[build]
+  dockerfile = "./dockerfile"
+  # image = 'quay.io/keycloak/keycloak:26.3'
+
+[processes]
+  # app = 'start-dev --hostname https://web-module-keycloak.fly.dev --proxy-headers xforwarded'
+  app = 'start --optimized --hostname https://web-module-keycloak.fly.dev --proxy-headers xforwarded'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[env]
+  JAVA_OPTS = '-Djboss.bind.address.private=127.0.0.1 -Djboss.bind.address=0.0.0.0 -Djava.net.preferIPv6Addresses=true'
+
+  KC_DB_URL = 'jdbc:postgresql://pgbouncer.vmkq609872nr35ln.flympg.net/fly-db'
+  KC_DB = 'postgres'
+  
+  KC_HOSTNAME = 'https://web-module-keycloak.fly.dev'
+  KC_PROXY = 'edge'
+  PROXY_ADDRESS_FORWARDING = "true"
+  KC_HTTP_ENABLED = 'true'
+  KC_HOSTNAME_STRICT = 'false'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
