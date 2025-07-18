@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using WebModuleTeko.Configuration;
 using WebModuleTeko.Database;
@@ -7,6 +8,17 @@ using WebModuleTeko.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 var apiConfiguration = builder.Configuration.GetSection(nameof(ApiConfiguration)).Get<ApiConfiguration>()!;
+
+// Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.Authority = apiConfiguration.TokenAuthority;
+    options.Audience = apiConfiguration.TokenAudience;
+});
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -29,11 +41,13 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
     app.UseHttpsRedirection();
-
 }
 
 app.UseRateLimiter();
 app.MapControllers();
+
+// Authentication
+app.UseAuthentication();
 
 // Use Swagger
 app.UseSwagger();

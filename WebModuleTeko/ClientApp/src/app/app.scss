@@ -3,7 +3,7 @@
 }
 
 .content {
-    height: 100vh;
+    height: calc(100vh - 64px);
     background-color: var(--mat-sys-background);
     color: var(--mat-sys-on-background);
 }

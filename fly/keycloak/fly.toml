@@ -25,7 +25,8 @@ primary_region = 'fra'
 [env]
   JAVA_OPTS = '-Djboss.bind.address.private=127.0.0.1 -Djboss.bind.address=0.0.0.0 -Djava.net.preferIPv6Addresses=true'
 
-  KC_DB_URL = 'jdbc:postgresql://pgbouncer.vmkq609872nr35ln.flympg.net/fly-db'
+  KC_DB_URL = 'jdbc:postgresql://web-module-postgresdb.flycast:5432/web_module_keycloak?sslmode=disable'
+  # KC_DB_URL = 'jdbc:postgresql://web-module-postgresdb.flycast:5432/keycloak?sslmode=require'
   KC_DB = 'postgres'
   
   KC_HOSTNAME = 'https://web-module-keycloak.fly.dev'
