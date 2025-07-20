@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NSwag.Annotations;
 using WebModuleTeko.Database;
 
 namespace WebModuleTeko.Controllers;
 
 [ApiController]
-[OpenApiTag("Account")]
 [Route("[controller]")]
 public class PostController : ControllerBase
 {

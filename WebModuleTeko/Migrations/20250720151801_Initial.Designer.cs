@@ -12,7 +12,7 @@ using WebModuleTeko.Database;
 namespace WebModuleTeko.Migrations
 {
     [DbContext(typeof(WmtContext))]
-    [Migration("20250624133414_Initial")]
+    [Migration("20250720151801_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -38,6 +38,29 @@ namespace WebModuleTeko.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("WebModuleTeko.Database.Entities.UserEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TfaKey")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

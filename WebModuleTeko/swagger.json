@@ -6,19 +6,31 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/Account/GetAllAccounts": {
-      "get": {
+    "/Authentication/Register": {
+      "post": {
         "tags": [
-          "Account"
+          "Authentication"
         ],
-        "operationId": "Account_GetAllAccounts",
+        "operationId": "Authentication_Register",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUserModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/TotpModel"
                 }
               }
             }
@@ -29,7 +41,7 @@
     "/Post/GetTest": {
       "get": {
         "tags": [
-          "Account"
+          "Post"
         ],
         "operationId": "Post_GetTest",
         "responses": {
@@ -45,12 +57,60 @@
           }
         }
       }
+    },
+    "/User/GetAllAccounts": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_GetAllAccounts",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
-  "components": {},
-  "tags": [
-    {
-      "name": "Account"
+  "components": {
+    "schemas": {
+      "TotpModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "image": {
+            "type": "string"
+          },
+          "setupCode": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          }
+        }
+      },
+      "RegisterUserModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
     }
-  ]
+  }
 }

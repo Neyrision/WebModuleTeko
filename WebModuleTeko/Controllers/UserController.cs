@@ -1,19 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NSwag.Annotations;
 using WebModuleTeko.Database;
 
 namespace WebModuleTeko.Controllers;
 
 [ApiController]
-[OpenApiTag("Account")]
 [Route("[controller]")]
-public class AccountController : ControllerBase
+public class UserController : ControllerBase
 {
-    private readonly ILogger<AccountController> _logger;
+    private readonly ILogger<UserController> _logger;
     private readonly WmtContext _wmtContext;
 
-    public AccountController(ILogger<AccountController> logger, WmtContext context)
+    public UserController(ILogger<UserController> logger, WmtContext context)
     {
         _logger = logger;
         _wmtContext = context;
