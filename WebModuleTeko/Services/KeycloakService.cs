@@ -5,7 +5,7 @@ public class KeycloakService
 
     public KeycloakService(IHttpClientFactory clientFactory)
     {
-
+        clientFactory.CreateClient();
     }
 
 }

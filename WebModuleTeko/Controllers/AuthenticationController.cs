@@ -18,7 +18,7 @@ public class AuthenticationController : ControllerBase
         _wmtContext = context;
     }
 
-    [HttpPost("[login]")]
+    [HttpPost("[action]")]
     public async Task<ActionResult> Login()
     {
         return Ok();
