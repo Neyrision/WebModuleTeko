@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OtpNet;
 using WebModuleTeko.Database;
+using WebModuleTeko.Database.Entities;
 using WebModuleTeko.Helpers;
 using WebModuleTeko.Models;
+using WebModuleTeko.Services;
 
 namespace WebModuleTeko.Controllers;
 
@@ -11,36 +15,53 @@ public class AuthenticationController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
     private readonly WmtContext _wmtContext;
+    private readonly KeycloakService _keycloakService;
 
-    public AuthenticationController(ILogger<UserController> logger, WmtContext context)
+    public AuthenticationController(
+        ILogger<UserController> logger, 
+        WmtContext context,
+        KeycloakService keycloakService)
     {
         _logger = logger;
         _wmtContext = context;
+        _keycloakService = keycloakService;
     }
 
     [HttpPost("[action]")]
-    public async Task<ActionResult> Login()
+    public async Task<ActionResult<AuthenticatedUserModel>> GetToken(string username, string password, string tfaCode)
     {
-        return Ok();
+        var token = await _keycloakService.LoginUser(username, password);
+        var user = await _wmtContext.Users.FirstOrDefaultAsync(user => user.Username == username);
+
+        if (user == null || !TotpHelper.ValidateSecret(user.TfaKey, tfaCode))
+        {
+            return Forbid();
+        }
+
+        return Ok(new AuthenticatedUserModel
+        {
+            Email = user.Email,
+            Username = user.Username,
+            Token = token,
+        });
     }
 
     [HttpPost("[action]")]
-    public async Task<TotpModel> Register(RegisterUserModel model)
+    public async Task<TotpModel> RegisterNewUser(RegisterUserModel model)
     {
         var secret = TotpHelper.NewSecret();
         var totpUri = TotpHelper.NewTotpUri("WebModule", secret, model.Email);
 
-        //var totp = new Totp(secret);
-        //totp.ComputeTotp();
+        _wmtContext.Add(new UserEntity()
+        {
+            Email = model.Email,
+            Username = model.Username,
+            TfaKey = secret
+        });
 
-        //_wmtContext.Add(new UserEntity()
-        //{
-        //    Email = model.Email,
-        //    Username = model.Username,
-        //    TfaKey = tfaKey
-        //});
+        await _wmtContext.SaveChangesAsync();
 
-        //await _wmtContext.SaveChangesAsync();
+        await _keycloakService.CreateNewUser(model);
 
         return new TotpModel
         {

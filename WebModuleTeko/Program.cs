@@ -1,23 +1,38 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using WebModuleTeko.Configuration;
 using WebModuleTeko.Database;
 using WebModuleTeko.Extensions;
+using WebModuleTeko.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<ApiConfiguration>(builder.Configuration.GetSection(nameof(ApiConfiguration)));
 var apiConfiguration = builder.Configuration.GetSection(nameof(ApiConfiguration)).Get<ApiConfiguration>()!;
 
 // Authentication
+builder.Services.AddHttpClient<KeycloakService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
 }).AddJwtBearer(options =>
 {
     options.Authority = apiConfiguration.TokenAuthority;
-    options.Audience = apiConfiguration.TokenAudience;
+    options.Audience = apiConfiguration.ClientId;
+    options.RequireHttpsMetadata = false; // Idk man??
+
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateAudience = true,
+        ValidAudience = apiConfiguration.ClientId,
+        ValidateIssuer = true,
+        ValidIssuer = apiConfiguration.TokenAuthority,
+        ValidateLifetime = true
+    };
 });
 
 // Add services to the container.
@@ -48,6 +63,7 @@ app.MapControllers();
 
 // Authentication
 app.UseAuthentication();
+app.UseAuthorization();
 
 // Use Swagger
 app.UseSwagger();

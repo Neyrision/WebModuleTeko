@@ -1,10 +1,18 @@
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Component } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import {
+  Component,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { AuthService } from './services/auth.service';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,25 +23,49 @@ import { MatListModule } from '@angular/material/list';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
   ],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
-export class App {
-  
+export class App implements OnInit, OnDestroy {
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+
   protected title = 'WebModuleTeko';
   protected showMenu = false;
+  protected isAuthenticated = false;
 
-  constructor(private readonly router: Router) {
+  constructor(
+    private readonly router: Router,
+    private readonly authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    this.authService.authenticationChanged
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((_) => {
+        this.isAuthenticated = this.authService.isAuthenticated();
+      });
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+  }
+
+  protected getDisplayName(): string {
+    return this.authService.getUsername() ?? 'unknown';
+  }
 
   protected onHomeClick(): void {
     this.router.navigate(['/']);
   }
-  protected onClick(): void {
+  protected onLogout(): void {
+    this.authService.clearToken();
+    this.router.navigate(['/']);
+    window.location.reload();
+  }
+  protected onLogin(): void {
     this.router.navigate(['login']);
   }
-
 }

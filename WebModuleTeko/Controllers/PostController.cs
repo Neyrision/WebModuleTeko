@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebModuleTeko.Database;
 
@@ -18,10 +19,15 @@ public class PostController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public async Task<ActionResult<string>> GetTest()
+    public async Task<ActionResult<string>> GetTest1()
     {
-        var test = await _wmtContext.Posts.ToListAsync();
+        return Ok("Free");
+    }
 
-        return Ok("");
+    [Authorize]
+    [HttpGet("[action]")]
+    public async Task<ActionResult<string>> GetTest2()
+    {
+        return Ok("Authorized");
     }
 }

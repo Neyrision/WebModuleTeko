@@ -45,7 +45,7 @@ export class RegisterComponent {
     if(this.formGroup.invalid) return;
 
     const model = this.formGroup.getRawValue();
-    this.authenticationService.register({
+    this.authenticationService.registerNewUser({
       email: model.email!,
       password: model.password!,
       username: model.username!
