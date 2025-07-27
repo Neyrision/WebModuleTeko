@@ -1,4 +1,4 @@
-﻿namespace WebModuleTeko.Models;
+﻿namespace WebModuleTeko.Models.Authentication;
 
 public class RegisterUserModel
 {

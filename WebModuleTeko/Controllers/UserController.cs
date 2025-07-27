@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebModuleTeko.Database;
 using WebModuleTeko.Services;
+using WebModuleTeko.Services.Authentication;
 
 namespace WebModuleTeko.Controllers;
 
