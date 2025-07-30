@@ -41,6 +41,7 @@ public class AuthenticationController : ControllerBase
         return Ok(new AuthenticatedUserModel
         {
             Email = user.Email,
+            UserId = user.Id,
             Username = user.Username,
             Token = token,
         });

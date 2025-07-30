@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { AuthenticationApiService } from '../../../../api/api-services';
 import { AuthService } from '../../../services/auth.service';
+import { MessageService } from '../../../services/message.service';
 
 @Component({
   imports: [
@@ -36,6 +37,7 @@ export class LoginComponent {
   protected show2FaInput: boolean = false;
 
   constructor(
+    private readonly messageService: MessageService,
     private readonly authService: AuthService,
     private readonly authenticationService: AuthenticationApiService,
     private readonly router: Router
@@ -44,13 +46,19 @@ export class LoginComponent {
   protected onLoginClick(): void {
     this.formGroup.markAllAsTouched();
 
-    if (this.formGroup.invalid) return;
+    if (this.formGroup.invalid) {
+      this.messageService.show('Invalid input', 'error');
+      return;
+    }
 
     this.show2FaInput = true;
   }
 
   protected onCompleteLogin(): void {
-    if (this.tfaFormControl.invalid) return;
+    if (this.tfaFormControl.invalid) {
+      this.messageService.show('Invalid input', 'error', -1);
+      return;
+    }
 
     const login = this.formGroup.getRawValue();
 

@@ -27,3 +27,23 @@ body {
 .mat-mdc-button-base {
   border-radius: 4px !important;
 }
+.mdc-snackbar.error-message {
+  .mat-mdc-snackbar-surface {
+    color: var(--mat-sys-on-error) !important;
+    background-color: var(--mat-sys-error) !important;
+  }
+}
+.mdc-snackbar.info-message {
+  .mat-mdc-snackbar-surface {
+    // color: var(--bs-info-text-emphasis) !important;
+    color: white !important;
+    background-color: var(--bs-info) !important;
+  }
+}
+.mdc-snackbar.success-message {
+  .mat-mdc-snackbar-surface {
+    // color: var(--bs-success-text-emphasis) !important;
+    color: white;
+    background-color: var(--bs-success) !important;
+  }
+}

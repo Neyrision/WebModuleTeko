@@ -57,14 +57,20 @@ export class App implements OnInit, OnDestroy {
     return this.authService.getUsername() ?? 'unknown';
   }
 
+  protected onOpenProfile(): void {
+    this.router.navigate(['profile']);
+  }
+
   protected onHomeClick(): void {
     this.router.navigate(['/']);
   }
+
   protected onLogout(): void {
     this.authService.clearToken();
     this.router.navigate(['/']);
     window.location.reload();
   }
+
   protected onLogin(): void {
     this.router.navigate(['login']);
   }

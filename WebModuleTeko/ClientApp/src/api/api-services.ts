@@ -249,6 +249,7 @@ export class PostApiService {
 
 export interface AuthenticatedUserModel {
     email?: string;
+    userId?: string;
     username?: string;
     token?: string;
 }

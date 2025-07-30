@@ -134,6 +134,10 @@
           "email": {
             "type": "string"
           },
+          "userId": {
+            "type": "string",
+            "format": "guid"
+          },
           "username": {
             "type": "string"
           },
