@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WebModuleTeko.Configuration;
@@ -48,6 +50,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApiDocument();
 
+builder.Services.AddSpaStaticFiles(config =>
+{
+    config.RootPath = "wwwroot";
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -80,6 +87,19 @@ app.UseCors(options => options
     .AllowAnyMethod()
     .AllowCredentials());
 
+if(!app.Environment.IsDevelopment())
+{
+    Console.WriteLine("Starting WebServer");
+
+    app.UseStaticFiles();
+    app.UseSpaStaticFiles();
+    app.UseSpa(builder =>
+    {
+        //builder.Options.SourcePath = "ClientApp";
+        //builder.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+        //builder.UseAngularCliServer(npmScript: "start");
+    });
+}
 
 if (!app.Environment.IsEnvironment("NSwag"))
 {
