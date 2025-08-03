@@ -3,26 +3,82 @@
     <h2 class="mb-4">Login</h2>
     <form>
       <div class="row">
+        @if(show2FaInput) {
+        <div class="col-12">Please enter your 2fa Code</div>
         <div class="col-12">
           <mat-form-field class="w-100">
-            <mat-label>Email</mat-label>
-            <input [formControl]="formGroup.controls.email" matInput type="email" />
+            <input
+              [formControl]="tfaFormControl"
+              placeholder="XXXXXX"
+              matInput
+              type="tfa"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-8">
+          <button
+            type="button"
+            mat-flat-button
+            class="w-100"
+            color="primary"
+            (click)="onCompleteLogin()"
+          >
+            Verify
+          </button>
+        </div>
+        <div class="col-4">
+          <button
+            type="button"
+            mat-button
+            class="w-100"
+            (click)="onBackClick()"
+          >
+            <- Go back
+          </button>
+        </div>
+        } @else {
+        <div class="col-12">
+          <mat-form-field class="w-100">
+            <mat-label>Username</mat-label>
+            <input
+              [formControl]="formGroup.controls.username"
+              matInput
+              type="username"
+            />
           </mat-form-field>
         </div>
         <div class="col-12">
           <mat-form-field class="w-100">
             <mat-label>Password</mat-label>
-            <input [formControl]="formGroup.controls.password" matInput type="password" />
+            <input
+              [formControl]="formGroup.controls.password"
+              matInput
+              type="password"
+            />
           </mat-form-field>
         </div>
         <div class="col-8">
-          <button type="button" mat-flat-button class="w-100" color="primary" (click)="onLoginClick()">
+          <button
+            type="button"
+            mat-flat-button
+            class="w-100"
+            color="primary"
+            (click)="onLoginClick()"
+          >
             Login
           </button>
         </div>
         <div class="col-4">
-          <button type="button" mat-button class="w-100" (click)="onRegisterClick()">Register</button>
+          <button
+            type="button"
+            mat-button
+            class="w-100"
+            (click)="onRegisterClick()"
+          >
+            Go to -> Register
+          </button>
         </div>
+        }
       </div>
     </form>
   </mat-card>

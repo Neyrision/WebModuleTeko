@@ -6,20 +6,45 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/Authentication/Login": {
+    "/Authentication/GetToken": {
       "post": {
         "tags": [
           "Authentication"
         ],
-        "operationId": "Authentication_Login",
+        "operationId": "Authentication_GetToken",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "tfaCode",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 3
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/AuthenticatedUserModel"
                 }
               }
             }
@@ -27,12 +52,12 @@
         }
       }
     },
-    "/Authentication/Register": {
+    "/Authentication/RegisterNewUser": {
       "post": {
         "tags": [
           "Authentication"
         ],
-        "operationId": "Authentication_Register",
+        "operationId": "Authentication_RegisterNewUser",
         "requestBody": {
           "x-name": "model",
           "content": {
@@ -59,12 +84,12 @@
         }
       }
     },
-    "/Post/GetTest": {
+    "/Post/GetTest1": {
       "get": {
         "tags": [
           "Post"
         ],
-        "operationId": "Post_GetTest",
+        "operationId": "Post_GetTest1",
         "responses": {
           "200": {
             "description": "",
@@ -79,12 +104,12 @@
         }
       }
     },
-    "/User/GetAllAccounts": {
+    "/Post/GetTest2": {
       "get": {
         "tags": [
-          "User"
+          "Post"
         ],
-        "operationId": "User_GetAllAccounts",
+        "operationId": "Post_GetTest2",
         "responses": {
           "200": {
             "description": "",
@@ -102,6 +127,25 @@
   },
   "components": {
     "schemas": {
+      "AuthenticatedUserModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "username": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
       "TotpModel": {
         "type": "object",
         "additionalProperties": false,

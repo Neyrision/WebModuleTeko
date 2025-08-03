@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using OtpNet;
+﻿using OtpNet;
 using QRCoder;
 
 namespace WebModuleTeko.Helpers;
@@ -11,6 +10,14 @@ public static class TotpHelper
     {
         var secret = System.Security.Cryptography.RandomNumberGenerator.GetBytes(20);
         return Base32Encoding.ToString(secret);
+    }
+
+    public static bool ValidateSecret(string secret, string code)
+    {
+        var totp = new Totp(Base32Encoding.ToBytes(secret));
+        totp.VerifyTotp(code, out var match);
+
+        return match > 0;
     }
 
     public static string NewTotpUri(string issuer, string secret, string email)

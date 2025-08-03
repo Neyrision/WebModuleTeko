@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://web-module.fly.dev'
+  apiUrl: 'http://localhost:6080'
 };

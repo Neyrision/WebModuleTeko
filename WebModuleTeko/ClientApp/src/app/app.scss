@@ -1,9 +1,24 @@
 .title {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+.face {
+  height: 32px;
+}
+
+.mat-toolbar {
+    box-shadow: 0px 0px 8px 2px #00716663;
+}
+
+.main-container {
+    min-height: 100%;
+    min-width: 100%;
 }
 
 .content {
-    height: calc(100vh - 64px);
-    background-color: var(--mat-sys-background);
-    color: var(--mat-sys-on-background);
+  height: calc(100vh - 64px);
+  background-color: var(--mat-sys-background);
+  background: 
+    radial-gradient(rgb(0 210 255 / 25%), #00000000 2px) 50% / 52px 52px round;
+  color: var(--mat-sys-on-background);
 }

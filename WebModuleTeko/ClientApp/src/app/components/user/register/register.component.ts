@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -18,17 +23,24 @@ import { AuthenticationApiService } from '../../../../api/api-services';
   templateUrl: './register.component.html',
 })
 export class RegisterComponent {
-  
   protected readonly formGroup = new FormGroup({
-    email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
-    username: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(32)]),
-    // Need to implement proper password policies.
-    password: new FormControl<string | null>(null, Validators.required),
-    repeatedPassword: new FormControl<string | null>(null, Validators.required)
+    email: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.email,
+    ]),
+    username: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(32),
+    ]),
+    password: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    repeatedPassword: new FormControl<string | null>(null, Validators.required),
   });
 
   constructor(
-    private readonly router: Router, 
+    private readonly router: Router,
     private readonly authenticationService: AuthenticationApiService
   ) {}
 
@@ -37,21 +49,27 @@ export class RegisterComponent {
   }
 
   protected onRegisterClick(): void {
-    const passwordRepeatValidator = Validators.pattern(this.formGroup.controls.password.value ?? '');
-    this.formGroup.controls.repeatedPassword.setValidators([passwordRepeatValidator, Validators.required])
+    const passwordRepeatValidator = Validators.pattern(
+      this.formGroup.controls.password.value ?? ''
+    );
+    this.formGroup.controls.repeatedPassword.setValidators([
+      passwordRepeatValidator,
+      Validators.required,
+    ]);
 
     this.formGroup.markAllAsTouched();
 
-    if(this.formGroup.invalid) return;
+    if (this.formGroup.invalid) return;
 
     const model = this.formGroup.getRawValue();
-    this.authenticationService.register({
-      email: model.email!,
-      password: model.password!,
-      username: model.username!
-    }).subscribe((tfaModel) => {
-      this.router.navigate(['2fa'], { state: tfaModel });
-    });
+    this.authenticationService
+      .registerNewUser({
+        email: model.email!,
+        password: model.password!,
+        username: model.username!,
+      })
+      .subscribe((tfaModel) => {
+        this.router.navigate(['2fa'], { state: tfaModel });
+      });
   }
-
 }

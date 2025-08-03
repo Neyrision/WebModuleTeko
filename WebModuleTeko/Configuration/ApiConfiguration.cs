@@ -2,7 +2,9 @@
 
 public class ApiConfiguration
 {
-    public string AllowedOrigin { get; set; }
-    public string TokenAuthority { get; set; }
-    public string TokenAudience { get; set; }
+    public string AllowedOrigin { get; set; } = null!;
+    public string KeycloakApiUrl { get; set; } = null!;
+    public string TokenAuthority { get; set; } = null!;
+    public string ClientId { get; set; } = null!;
+    public string ClientSecret { get; set; } = null!;
 }
