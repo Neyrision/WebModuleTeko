@@ -123,7 +123,7 @@ public class KeycloakService
 
     private async Task<bool> IsReady()
     {
-        var response = await _httpClient.GetAsync("/health/ready");
+        var response = await _httpClient.GetAsync("realms/web-module/.well-known/openid-configuration");
 
         return response.IsSuccessStatusCode;
     }
