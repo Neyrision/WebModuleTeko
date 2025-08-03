@@ -20,21 +20,28 @@ import { MessageService } from '../../services/message.service';
 export class HomeComponent {
   constructor(
     private readonly messageService: MessageService,
-    private readonly service: PostApiService) {}
+    private readonly service: PostApiService
+  ) {}
 
   test1(): void {
-    this.messageService.show('test', 'success');
-    this.messageService.show('test', 'error');
-    this.messageService.show('test', 'info');
-
-    this.service.getTest1().subscribe((result) => {
-      console.log('T1', result);
+    this.service.getTest1().subscribe({
+      next: (result) => {
+        this.messageService.show('Test1 succeeded', 'success');
+      },
+      error: (err) => {
+        this.messageService.show('Test1 failed', 'error');
+      },
     });
   }
 
   test2(): void {
-    this.service.getTest2().subscribe((result) => {
-      console.log('T2', result);
+    this.service.getTest2().subscribe({
+      next: (result) => {
+        this.messageService.show('Test2 succeeded', 'success');
+      },
+      error: (err) => {
+        this.messageService.show('Test2 failed', 'error');
+      },
     });
   }
 }

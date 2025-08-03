@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { AuthenticationApiService } from '../../../../api/api-services';
+import { MessageService } from '../../../services/message.service';
 
 @Component({
   imports: [
@@ -41,6 +42,7 @@ export class RegisterComponent {
 
   constructor(
     private readonly router: Router,
+    private readonly messageService: MessageService,
     private readonly authenticationService: AuthenticationApiService
   ) {}
 
@@ -59,7 +61,10 @@ export class RegisterComponent {
 
     this.formGroup.markAllAsTouched();
 
-    if (this.formGroup.invalid) return;
+    if (this.formGroup.invalid) {
+      this.messageService.show('Invalid input', 'error');
+      return;
+    }
 
     const model = this.formGroup.getRawValue();
     this.authenticationService
@@ -68,8 +73,13 @@ export class RegisterComponent {
         password: model.password!,
         username: model.username!,
       })
-      .subscribe((tfaModel) => {
-        this.router.navigate(['2fa'], { state: tfaModel });
+      .subscribe({
+        next: (tfaModel) => {
+          this.router.navigate(['2fa'], { state: tfaModel });
+        },
+        error: (error) => {
+          this.messageService.show('Couldn\'t register user. User already exists or service is temporary unavailable. Please try again later.', 'error');
+        }
       });
   }
 }

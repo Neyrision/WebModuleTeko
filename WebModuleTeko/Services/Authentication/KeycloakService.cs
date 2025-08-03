@@ -11,6 +11,8 @@ namespace WebModuleTeko.Services.Authentication;
 
 public class KeycloakService
 {
+    private readonly int Retries = 5;
+
     private readonly HttpClient _httpClient;
     private readonly ApiConfiguration _apiConfiguration;
 
@@ -21,6 +23,26 @@ public class KeycloakService
         _httpClient = httpClient;
         _apiConfiguration = apiConfiguration.Value;
         _httpClient.BaseAddress = new Uri(_apiConfiguration.KeycloakApiUrl);
+    }
+
+    public async Task<bool> EnsureReady()
+    {
+        var tryCount = 0;
+        var connected = false;
+
+        while(!connected || tryCount >= Retries)
+        {
+            try
+            {
+                connected = await IsReady();
+            }catch(Exception ex) {
+                await Task.Delay(500);
+            }
+
+            tryCount++;
+        }
+
+        return connected;
     }
 
     public async Task<string> LoginUser(string username, string password)
@@ -97,6 +119,13 @@ public class KeycloakService
 
         _token = tokenResponse.AccessToken;
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+    }
+
+    private async Task<bool> IsReady()
+    {
+        var response = await _httpClient.GetAsync("/health/ready");
+
+        return response.IsSuccessStatusCode;
     }
 
     private class TokenResponse

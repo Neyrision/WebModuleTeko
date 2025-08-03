@@ -55,18 +55,29 @@ export class LoginComponent {
   }
 
   protected onCompleteLogin(): void {
+    this.tfaFormControl.markAllAsTouched();
+
     if (this.tfaFormControl.invalid) {
-      this.messageService.show('Invalid input', 'error', -1);
+      this.messageService.show('Invalid input', 'error');
       return;
     }
 
     const login = this.formGroup.getRawValue();
 
     this.authenticationService
-      .getToken(login.username!, login.password!, this.tfaFormControl.getRawValue()!)
-      .subscribe((authenticatedUser) => {
-        this.authService.setToken(authenticatedUser);
-        this.router.navigate(['/']);
+      .getToken(
+        login.username!,
+        login.password!,
+        this.tfaFormControl.getRawValue()!
+      )
+      .subscribe({
+        next: (authenticatedUser) => {
+          this.authService.setToken(authenticatedUser);
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          this.messageService.show('Couldn\'t login. Please check your credentials or try again later.', 'error');
+        },
       });
   }
 

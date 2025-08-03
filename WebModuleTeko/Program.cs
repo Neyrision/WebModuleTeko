@@ -1,9 +1,12 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WebModuleTeko.Configuration;
 using WebModuleTeko.Database;
 using WebModuleTeko.Extensions;
+using WebModuleTeko.Models.Authentication;
+using WebModuleTeko.Models.Authentication.Validators;
 using WebModuleTeko.Services.Authentication;
 
 
@@ -38,6 +41,8 @@ builder.Services.AddAuthentication(options =>
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddRateLimiter();
+builder.Services.AddSingleton<LoginLimiterService>();
+builder.Services.AddScoped<IValidator<RegisterUserModel>, RegisterUserModelValidator>();
 
 // Add db.
 builder.Services.AddDbContext<WmtContext>(options => 
