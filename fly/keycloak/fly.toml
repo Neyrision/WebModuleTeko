@@ -28,7 +28,10 @@ primary_region = 'fra'
   KC_DB_URL = 'jdbc:postgresql://web-module-postgresdb.flycast:5432/web_module_keycloak?sslmode=disable'
   # KC_DB_URL = 'jdbc:postgresql://web-module-postgresdb.flycast:5432/keycloak?sslmode=require'
   KC_DB = 'postgres'
-  
+
+  KC_HEALTH_ENABLED = 'true'
+  KC_METRICS_ENABLED = 'true'
+
   KC_HOSTNAME = 'https://web-module-keycloak.fly.dev'
   KC_PROXY = 'edge'
   PROXY_ADDRESS_FORWARDING = "true"

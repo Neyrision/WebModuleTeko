@@ -30,7 +30,7 @@ public class KeycloakService
         var tryCount = 0;
         var connected = false;
 
-        while(!connected || tryCount >= Retries)
+        while(!connected && tryCount < Retries)
         {
             try
             {
