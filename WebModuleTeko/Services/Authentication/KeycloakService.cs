@@ -5,9 +5,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json.Serialization;
 using WebModuleTeko.Configuration;
-using WebModuleTeko.Models;
+using WebModuleTeko.Models.Authentication;
 
-namespace WebModuleTeko.Services;
+namespace WebModuleTeko.Services.Authentication;
 
 public class KeycloakService
 {

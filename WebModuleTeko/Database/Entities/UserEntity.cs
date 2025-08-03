@@ -1,9 +1,13 @@
-﻿namespace WebModuleTeko.Database.Entities;
+﻿using WebModuleTeko.Database.Entities.Base;
 
-public class UserEntity
+namespace WebModuleTeko.Database.Entities;
+
+public class UserEntity : BaseEntity
 {
-    public Guid Id { get; set; }
     public string Username { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string TfaKey { get; set; } = null!;
+    
+    public ICollection<ForumPostEntity> Posts { get; set; }
+    public ICollection<ForumEntryEntity> ForumEntries { get; set; }
 }

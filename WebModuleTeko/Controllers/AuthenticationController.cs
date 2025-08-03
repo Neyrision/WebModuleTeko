@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OtpNet;
 using WebModuleTeko.Database;
 using WebModuleTeko.Database.Entities;
 using WebModuleTeko.Helpers;
 using WebModuleTeko.Models;
-using WebModuleTeko.Services;
+using WebModuleTeko.Models.Authentication;
+using WebModuleTeko.Services.Authentication;
 
 namespace WebModuleTeko.Controllers;
 

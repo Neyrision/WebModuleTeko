@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace WebModuleTeko.Models.Validators;
+namespace WebModuleTeko.Models.Authentication.Validators;
 
 public class RegisterUserModelValidator : AbstractValidator<RegisterUserModel>
 {

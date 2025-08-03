@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WebModuleTeko.Configuration;
 using WebModuleTeko.Database;
 using WebModuleTeko.Extensions;
-using WebModuleTeko.Services;
+using WebModuleTeko.Services.Authentication;
 
 
 var builder = WebApplication.CreateBuilder(args);
