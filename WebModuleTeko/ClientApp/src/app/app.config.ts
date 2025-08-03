@@ -6,7 +6,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { API_BASE_URL } from '../api/api-services';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { environment } from '../environments/environment.prod';
+import { environment } from '../environments/environment';
 import { authInterceptor } from './auth-interceptor';
 
 export const appConfig: ApplicationConfig = {

@@ -4,14 +4,14 @@ WORKDIR /app
 COPY ClientApp ./ClientApp
 WORKDIR /app/ClientApp
 RUN npm install
-#RUN npm run build-prod
-RUN npm run build-local
+RUN npm run build-prod
+#RUN npm run build-local
 
 # Stage 2: Build .NET Core App
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 COPY . .
-COPY --from=node-builder /app/ClientApp/dist/WebModuleTeko/browser /src/wwwroot
+COPY --from=node-builder /app/ClientApp/dist/WebModuleTeko /src/wwwroot
 RUN dotnet restore
 RUN dotnet publish -c Release -o /app/publish -p:BuildSwag=false
 
