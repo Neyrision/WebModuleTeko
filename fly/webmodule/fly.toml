@@ -3,11 +3,11 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'web-module'
+app = 'tela'
 primary_region = 'fra'
 
 [build]
-  image = 'thecodewizard27/web-module:latest'
+  image = 'thecodewizard27/tela:latest'
 
 [env]
   ApiConfiguration__AllowedOrigin = ''
